@@ -1,0 +1,45 @@
+---
+title: 'TP2 : fonction'
+author: "Viny Presty NAKAVOUA"
+date: "2024-11-29"
+output: html_document
+---
+
+# Exercice 1
+
+## nested loop
+
+```{r}
+a <- c("sombre", "clair")
+b <- c("rouge", "bleu", "vert", "jaune")
+```
+
+```{r}
+1:length(b)
+```
+
+
+```{r}
+b[1]
+```
+
+
+```{r}
+for (i in 1:length(b)){
+  for(j in 1:length(a)){
+    print(paste(b[i], a[j]))
+  }
+  
+}
+```
+
+
+
+
+
+
+
+
+
+
+

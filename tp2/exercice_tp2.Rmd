@@ -1,0 +1,149 @@
+---
+title: "Exercices tp2"
+author: "Viny Presty NAKAVOUA"
+date: "2024-11-29"
+output: html_document
+---
+
+
+# Exercice 1
+
+## nested loop
+
+```{r}
+a <- c("sombre", "clair")
+b <- c("rouge", "bleu", "vert", "jaune")
+```
+
+```{r}
+1:length(b)
+```
+
+```{r}
+b[1]
+```
+
+
+```{r}
+for (i in 1:length(b)){
+  for(j in 1:length(a)){
+    print(paste(b[i], a[j]))
+  }
+  
+}
+```
+
+
+# Exercice 2 :
+
+
+
+
+```{r}
+result <- function(note){
+  res <- ""
+  if (is.numeric(note)){
+    if (note >= 90){
+      res <- "A"
+    }
+    else if (note >= 80){
+      res <- "B"
+    }
+    else if (note >= 50){
+      res <- "C"
+    }
+    else if (note >= 40){
+      res <- "D"
+    }
+    else if(note >= 20){
+      res <- "E"
+    }
+    else{
+      res <- "F"
+    }
+    return(res)
+  }
+  else{
+    warning("Attention, vous avez entré une note qui n'est pas de type numérique. exemple de note valide :  75")
+  }
+  
+  
+}
+```
+
+
+
+
+
+```{r}
+result(67)
+```
+
+
+
+# Exercice 3 
+
+## fonction mystery
+
+```{r}
+mystery <- function(n){
+  # on ajoute un warning pour eviter qu'un petit malin puisse mettre un nombre 
+  # qui n'est pas entre 1 et 100, qui renverrait dans une boucle infinie
+  if (n >= 1 & n <= 100 ){
+    ## n est compris entre 1 et 100
+    ## tirage aleatoire entre 1 et 100, arret des tirages quand on trouve n
+    ech <- 1:100
+    counter <-  0
+    while(TRUE){
+      tirage <- sample(x=ech, size = 1)
+      counter <- counter + 1
+      if (tirage == n){
+        return(counter)
+        # pas besoin de mettre break car le return nous fais sortir de la boucle
+        # just comme en python
+        
+      }
+    }
+  }
+  else {
+    warning("Attention!! l'argument doit être compris entre 1 et 100")
+  }
+
+}
+```
+
+
+
+```{r}
+mystery(5)
+```
+
+
+
+## nombre moyen de tirages
+
+```{r}
+# on doit fixer la graine pour assurer la reproductivité
+# ça devient un faux aléa
+
+set.seed(123) 
+n <- 50
+appel <- rep(NA, 1000)
+for (i in 1:1000){
+  appel[i] <- mystery(n=n)
+}
+
+mean_appel <- mean(appel)
+mean_appel
+
+```
+
+
+le nombre moyen de tirages nécessaires pour trouver le nombre mystère est `r mean_appel`
+
+
+
+
+
+
+
