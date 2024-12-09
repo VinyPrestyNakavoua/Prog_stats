@@ -1,0 +1,112 @@
+---
+title: "tp1"
+author: "Viny Presty NAKAVOUA"
+date: "2024-11-29"
+output: html_document
+---
+
+# importation des données
+
+```{r}
+library(readxl)
+library(readr)
+dt <- read_csv("dt_hw.csv")
+df <- read_excel("dt_hw.xlsx")
+```
+
+
+# exporter les données
+
+```{r}
+library(openxlsx)
+write.csv(dt, file="dt.csv")
+write.xlsx(df, file="df.xlsx")
+```
+
+
+# fichier json
+
+```{r}
+library(rjson)
+library(jsonlite)
+tmp <- tempfile()
+write_json(iris, tmp)
+read_json(tmp)
+```
+
+
+# Exercice
+
+```{r}
+head(df,5)
+head(df,10)
+
+```
+
+
+```{r}
+df$Wind <- as.numeric(df$Wind)
+```
+
+
+```{r}
+summary(df)
+```
+
+
+```{r}
+library(dplyr)
+library(tidyverse)
+df %>%
+  select(Ozone)
+```
+
+```{r}
+df %>%
+  mutate(wind= as.numeric(Wind))
+```
+
+
+```{r}
+g <- tibble(a="setosa", b=3567)
+g
+```
+
+
+
+```{r}
+#shift ctrl m pour avoir le pipe %>%
+ndf <- iris %>% 
+  select(Species, Petal.Length, Petal.Width) %>%
+  filter(Petal.Length > 1.2 ) %>% 
+  mutate(surface = Petal.Length * Petal.Width) %>% 
+  group_by(Species) %>% 
+  summarise(surface_moyenne = mean(surface)) %>% 
+  ungroup() %>% 
+  arrange(desc(surface_moyenne))
+  # or left_join(., g, by=c( "Species" = "a"))
+  
+```
+
+
+
+```{r}
+ndf
+```
+
+
+
+```{r}
+ndf %>% left_join(g, by=c( "Species" = "a"))
+```
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,225 @@
+---
+title: "Exercice Prog_stat"
+author: "Viny Presty NAKAVOUA"
+date: "2024-11-29"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+# Répondre aux questions suivantes
+
+## importation des packages
+
+On a importé les packages readxl, dplyr, tidyverse
+
+```{r, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
+library(readxl)
+library(dplyr)
+library(tidyverse)
+```
+
+
+
+## Liser dans R le document dt_hw.csv
+
+```{r}
+dt_hw <- read_excel("dt_hw.xlsx")
+```
+
+
+
+## Quelles sont les noms des colonnes de cette table?
+
+```{r}
+names(dt_hw)
+```
+
+
+
+## Quelles sont les deux premières lignes d’observations de cette table?
+
+
+```{r}
+slice(dt_hw, 1:2)
+```
+
+
+```{r}
+head(dt_hw, 2)
+```
+
+
+
+## Quelles sont les deux dernières lignes d’observations de cette table?
+
+```{r}
+tail(dt_hw, 2)
+```
+
+```{r}
+a <- length(dt_hw$Ozone)-1
+b <- length(dt_hw$Ozone)
+slice(dt_hw, a:b)
+```
+
+
+
+
+## Quelle est la valeur d’Ozone à la 47ième ligne?
+
+```{r}
+slice(dt_hw, 47)
+```
+
+
+
+
+## Combien de valeurs manquantes a la variable Ozone
+
+
+```{r}
+nb_na <- dt_hw %>% 
+  filter(is.na(Ozone)) %>% 
+  .$Ozone %>% length()
+  
+```
+
+
+```{r}
+nb_na
+```
+
+
+nombre de valeurs manquantes de la colonne ozone est : `r nb_na`
+
+
+
+
+## Quelle est la moyenne d’Ozone quant toutes les valeurs manquantes sont retirées?
+
+```{r}
+mean_ozone <- dt_hw %>%
+  filter(!is.na(Ozone)) %>% 
+  .$Ozone %>% mean()
+```
+
+
+
+```{r}
+mean_ozone
+```
+
+la moyenne d’Ozone quand toutes les valeurs manquantes sont retirées est `r mean_ozone`
+
+
+
+
+## Extrayez le sous-ensemble de lignes de la trame de données où les valeurs d'ozone sont supérieures à 31 et les valeurs de température sont supérieures à 90. Quelle est la moyenne de Solar.R dans ce sous-ensemble ?
+
+
+```{r}
+mean_solar <- dt_hw %>% 
+  filter(Ozone > 31, Temp > 90) %>% 
+  .$Solar.R %>% mean()
+```
+
+
+```{r}
+mean_solar
+```
+
+la moyenne de Solar.R dans ce sous-ensemble est `r mean_solar`
+
+
+
+
+## Quelle est la moyenne de « Temp » lorsque la valeur Month (mois) est égal à 6 ?
+
+
+```{r}
+mean_temp6 <- dt_hw %>% 
+  filter(Month == 6) %>% 
+  .$Temp %>% mean()
+  
+```
+
+
+
+```{r}
+mean_temp6
+```
+
+la moyenne de « Temp » lorsque la valeur Month (mois) est égal à 6 est `r mean_temp6`
+
+
+
+
+## Quelle était la valeur maximale d’Ozone au mois de mai (c'est-à-dire que Month égal à 5) ?
+
+```{r}
+max_ozone5 <- dt_hw %>% 
+  select(Ozone, Month) %>% 
+  filter(Month==5, !is.na(Ozone)) %>% 
+  .$Ozone %>% max()
+```
+
+
+```{r}
+max_ozone5
+```
+
+
+la valeur maximale d’Ozone au mois de mai est `r max_ozone5`
+
+
+
+
+## Créer une nouvelle variable Temp_celcius = (temp− 32) × 5/9. Quelle sont les valeurs minimal et maximal de cette nouvelle variable?
+
+
+```{r}
+dt_hw <- dt_hw %>% 
+  mutate(Temp_celcius = ((Temp - 32) * 5/9))
+```
+
+
+```{r}
+minmaxcel <- dt_hw %>% 
+  .$Temp_celcius %>% range()
+  
+```
+
+
+```{r}
+minmaxcel
+```
+
+
+les valeurs minimal et maximal de Temp_celcius sont respectivement : `r minmaxcel[1]` et `r minmaxcel[2]`
+
+
+
+
+## Grouper la table dt_hw par mois et créer une nouvelle table avec la moyenne des temp_celsius par mois
+
+
+```{r}
+data2 <- dt_hw %>% 
+  group_by(Month) %>% 
+  summarise(temp_celsius_mean = mean(Temp_celcius)) %>% 
+  ungroup()
+  
+```
+
+
+la moyenne des temp_celsius par mois 
+
+
+```{r}
+data2
+```
+
+
+
+
