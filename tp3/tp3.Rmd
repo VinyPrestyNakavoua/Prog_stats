@@ -1,0 +1,119 @@
+---
+title: "tp3"
+author: "Viny Presty NAKAVOUA"
+date: "2024-12-06"
+output: html_document
+---
+
+# lecture et ecriture de fichier json
+
+```{r}
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+```
+
+
+
+```{r}
+df <- fromJSON("C:/Users/nakav/OneDrive - Université Clermont Auvergne/2A/prog_stat2/S3/iris.json")
+```
+
+
+```{r}
+str(df)
+```
+
+
+
+```{r}
+df1 <- iris
+```
+
+
+```{r}
+str(df1)
+```
+
+
+```{r}
+# les donnees sont égales mais on a un problème de format de la colonne species
+all(df == df1)
+```
+
+
+
+```{r}
+# convertissons le format de Specis de df en factor
+df <- df %>% 
+    mutate(Species = as.factor(Species))
+```
+
+
+```{r}
+str(df)
+```
+
+
+```{r}
+identical(df,df1)
+```
+
+
+```{r}
+# pour transformer un dataframe en format json
+jason <- toJSON(df, pretty = TRUE)
+```
+
+
+
+```{r}
+# pour exporter un dataframe en un fichier json en local
+write_json(df, path="iris_to_json.json", pretty=TRUE)
+```
+
+
+
+
+# ggplot2 visualisation
+
+```{r}
+# les themes pour changer le fond du graphique, le background
+mtcars %>% 
+  mutate(gear=as.factor(gear)) %>% 
+  ggplot(., aes(x=mpg, y=disp, colour = gear)) + geom_point() +
+  theme_minimal() +
+  # pour ajouter des element sur le graph on utilise labs
+  labs(
+    x= "consommation de fuel en miles per gallon",
+    y= "puissance du moteur",
+    title = "consommation de fuel par moteur"
+  )
+ # pour retirer des elements on utilise theme
+ # theme(axis.title.x = element_blank()) pour par exemple enlever le label de l'axe x
+ # ?? theme pour tout savoir sur theme
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

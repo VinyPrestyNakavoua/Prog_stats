@@ -1,0 +1,95 @@
+---
+title: "Exercice_tp3"
+author: "Viny Presty NAKAVOUA"
+date: "2024-12-06"
+output: html_document
+---
+
+
+```{r}
+library(readr)
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+```
+
+
+# importation de données :
+
+```{r}
+
+df1 <- read_csv("camisole.csv")
+df2 <- read_csv("nbre_camisoles_par_heure.csv")
+```
+
+
+
+```{r}
+view(df1)
+view(df2)
+```
+
+
+
+```{r}
+str(df1)
+```
+
+
+
+```{r}
+df1$mois
+```
+
+
+# Exercice 1: Camisole de force en Norvège
+
+
+```{r}
+df1$mois <- factor(df1$mois, levels = c("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", 
+                                         "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"))
+```
+
+
+```{r}
+g <- df1 %>% 
+  ggplot(aes(x = mois, y = camisole, fill = mois == "Juillet")) +
+  geom_col() +
+  geom_text(aes(label = camisole), 
+            vjust = -0.5, 
+            color = "black",
+            size = 4) +     
+  scale_fill_manual(values = c("TRUE" = "red", "FALSE" = "grey")) +
+  theme(legend.position = "none") +
+  labs(x = "Mois", y = "Nombre  d’utilisations forcées de camisoles")
+
+```
+
+
+```{r}
+g
+```
+
+
+On voit qu'au mois de juillet, mois de vacances, le nombre de 
+
+
+
+# Exercice 2
+
+
+```{r}
+view(df2)
+```
+
+
+```{r}
+ggplot(df2, aes(x=heure, y=camisole)) +
+  geom_line() +
+  labs(x = "Mois", y = "Nombre  d’utilisations forcées de camisoles")
+
+```
+
+
+
+
