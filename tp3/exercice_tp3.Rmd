@@ -71,7 +71,9 @@ g
 ```
 
 
-On voit qu'au mois de juillet, mois de vacances, le nombre de 
+On voit qu'au mois de juillet, mois de vacances, le nombre  d’utilisations forcées de camisoles a presqué doublé.
+Pourquoi juste en juillet ? pourquoi juste pendant les vacances ? cela est une coincidence ?
+Il pourrait avoir un lien ici mais on ne pourrait affirmer cela avec si peu de données.
 
 
 
@@ -89,6 +91,37 @@ ggplot(df2, aes(x=heure, y=camisole)) +
   labs(x = "Mois", y = "Nombre  d’utilisations forcées de camisoles")
 
 ```
+
+
+On constate que c'est à partir de 7-8 heures du matin, heure à laquelle la journée de travail en milieu hospitalier
+commence, que l'utilisation forcées de camisoles augmentent fortement. et c'est seulement après environ 17h, heure à laquelle la journée de travail en milieu hospitalier se termine, que le nombre d'utilisation forcées de camisoles commencent à baisser.
+
+
+
+
+
+
+
+```{r}
+m <- ggplot(df2, aes(x=heure)) +
+    geom_histogram() 
+```
+
+
+
+
+
+```{r}
+m + geom_histogram(aes(weight = camisole), binwidth = 2)
+```
+
+
+
+
+
+
+
+
 
 
 
