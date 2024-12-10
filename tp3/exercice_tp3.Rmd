@@ -31,11 +31,6 @@ view(df2)
 
 
 
-```{r}
-str(df1)
-```
-
-
 
 ```{r}
 df1$mois
@@ -52,7 +47,7 @@ df1$mois <- factor(df1$mois, levels = c("Janvier", "Février", "Mars", "Avril", 
 
 
 ```{r}
-g <- df1 %>% 
+g1 <- df1 %>% 
   ggplot(aes(x = mois, y = camisole, fill = mois == "Juillet")) +
   geom_col() +
   geom_text(aes(label = camisole), 
@@ -67,7 +62,7 @@ g <- df1 %>%
 
 
 ```{r}
-g
+g1
 ```
 
 
@@ -86,34 +81,24 @@ view(df2)
 
 
 ```{r}
-ggplot(df2, aes(x=heure, y=camisole)) +
+g2 <- ggplot(df2, aes(x=heure, y=camisole)) +
   geom_line() +
   labs(x = "Mois", y = "Nombre  d’utilisations forcées de camisoles")
 
 ```
 
 
+
+```{r}
+g2 + geom_vline(xintercept = 7, color="red", linewidth = 1, linetype = "solid") + 
+  geom_vline(xintercept = 21,color="red", linewidth = 1, linetype = "solid")
+```
+
+
+
 On constate que c'est à partir de 7-8 heures du matin, heure à laquelle la journée de travail en milieu hospitalier
 commence, que l'utilisation forcées de camisoles augmentent fortement. et c'est seulement après environ 17h, heure à laquelle la journée de travail en milieu hospitalier se termine, que le nombre d'utilisation forcées de camisoles commencent à baisser.
 
-
-
-
-
-
-
-```{r}
-m <- ggplot(df2, aes(x=heure)) +
-    geom_histogram() 
-```
-
-
-
-
-
-```{r}
-m + geom_histogram(aes(weight = camisole), binwidth = 2)
-```
 
 
 
