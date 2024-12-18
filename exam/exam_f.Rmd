@@ -1,0 +1,158 @@
+---
+title: "Examen"
+author: "Viny Presty NAKAVOUA"
+date: "2024-12-18"
+output: html_document
+---
+
+
+# lecture de fichier
+
+```{r}
+reader_csv <- function(path, start, end){
+  
+  # library
+  library(readr)
+  library(data.table)
+  library(lubridate)
+  
+  
+  
+  # on met une erreur s'il s'agit d'une mauvaise date pour end 
+  if (as.Date(start) > as.Date(end)) {
+    stop("La date de début doit être antérieure à la date de fin")
+  }
+  
+  # le problème avec R c'est qu'il reconnait facilement, les dates ecrits en ymd
+  # du coup pour faire a ce que la fonction fonctionne dans tous les cas,
+  # on va gerer le cas où l'user ecrit une date en dmy
+  
+  start <- as.Date(parse_date_time(start, "ymd"))
+  end <- as.Date(parse_date_time(end, "ymd"))
+
+  # generer les dates :
+  dates <- seq(as.Date(start), as.Date(end), "months")
+  dates <-format(dates,"%d-%m-%Y")
+  
+  # lecture de fichiers : start et end prendront des valeurs mois et années
+  
+  ## paste les dates avec ventes[].csv
+  date_pasted <- rep(NA, length(dates))
+  for (i in 1:length(dates)){
+    date_pasted[i] <- paste("ventes",dates[i],".csv", sep = "")
+  }
+  
+  ## on recupère les fichiers qu'on veut, qui existe vraiment.
+  data <- list.files(path = path)
+  data_to_read <- date_pasted[date_pasted %in% data]
+  
+  
+  # rbind pour la concatenation : on a maintenant les fichiers qu'on veut
+  ## importation et rbind
+  ### importation du premier jeu de données
+  
+  #### on se met d'abord dans le dossier où il se trouve les fichiers
+  setwd(path)
+  
+  #### on peut maintenant faire les importations et rbindations
+  
+  #### je prefere utiliser fread au lieu de read_cv ou read.csv
+  #### car fread est plus rapide, et si on tombait sur un gros
+  #### volume de donnees, il ferait l'affaire, puis il reconnait vite le separateur
+  #### et delimiteur, comme ça on evite les messages sur les delimiteurs
+
+  df <- fread(data_to_read[1])
+  df <- data.frame(df)
+  for (i in 2:length(data_to_read)){
+    df_temp <- fread(data_to_read[i])
+    df_temp <- data.frame(df_temp)
+    
+    # on peut ajouter ses lignes a df
+    df <- rbind(df, df_temp)
+    
+  }
+  
+  
+  # return des données 
+  
+  return(df)
+  
+}
+```
+
+
+
+
+## amélioration de la fonction
+je peux améliorer la fonction pour que ça prenne en compte les jours si on demande du 04-02-2020 au 17-06-2021, je peux utiliser la fonctiond d'en haut pour recuperer les données des mois
+et ensuite utiliser dplyr pour faire des filtres et avoir les dates qu'on veut reellement.
+
+
+
+## Lecture des données pour les dates demandées
+
+```{r}
+start <- "2020-01-01"
+end <- "2024-12-31"
+path <- "exam_data"
+```
+
+
+
+
+
+```{r}
+df <- reader_csv(path, start, end)
+```
+
+
+
+
+
+# visualisation des données :
+
+## visualisation du jeu de données
+
+```{r}
+head(df)
+```
+
+
+## types de données :
+
+```{r}
+str(df)
+```
+
+
+Les données ont déjà un bon format alors on peut les garder ainsi.
+
+
+## nombre de ventes
+
+
+```{r}
+library(ggplot2)
+ggplot(data = df) +
+  aes(x=date, y=nb_de_ventes)+
+  geom_line()
+
+```
+
+
+
+## type de vente
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
