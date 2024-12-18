@@ -113,11 +113,6 @@ df <- reader_csv(path, start, end)
 
 ## visualisation du jeu de données
 
-```{r}
-head(df)
-```
-
-
 ## formatage de données :
 
 ```{r}
@@ -135,20 +130,34 @@ df$an <- as.factor(df$an)
 ```
 
 
+## importation des library
+
+
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+
 ## Total des Ventes par année pour la période allant de 2020-01-01 à 2024-12-31
 
 
 ```{r}
-ggplot(data = df) +
-  aes(x = factor(an), y = nb_de_ventes) + # Utiliser factor pour l'axe x
+df %>% 
+  group_by(an) %>% 
+  summarise(sum_an = sum(nb_de_ventes)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = an, y = sum_an)) + 
   geom_col(fill = "steelblue") + # Couleur des barres
-  labs(title = "Ventes Annuelles du Produit FXD JET 100",
+  labs(title = "Ventes Annuelles du Produit FXD JET 100 de 2020 à 2024",
        x = "Année",
        y = "Nombre de Ventes") +
-  theme_minimal()
-
+  theme_minimal() +
+  geom_text(aes(label = sum_an), # Utiliser sum_an pour les étiquettes
+            vjust = -0.5, # Positionner l'étiquette juste au-dessus de la barre
+            size = 4, # Taille de l'étiquette
+            color = "black") # Couleur du texte
 ```
-
 
 
 
