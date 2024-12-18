@@ -118,34 +118,56 @@ head(df)
 ```
 
 
-## types de données :
+## formatage de données :
 
 ```{r}
 str(df)
 ```
 
 
-Les données ont déjà un bon format alors on peut les garder ainsi.
-
-
-## nombre de ventes
+on peut appliquer ces transformations
 
 
 ```{r}
-library(ggplot2)
+df$mois <- as.factor(df$mois)
+df$an <- as.factor(df$an)
+
+```
+
+
+## Total des Ventes par année pour la période allant de 2020-01-01 à 2024-12-31
+
+
+```{r}
 ggplot(data = df) +
-  aes(x=date, y=nb_de_ventes)+
-  geom_line()
+  aes(x = factor(an), y = nb_de_ventes) + # Utiliser factor pour l'axe x
+  geom_col(fill = "steelblue") + # Couleur des barres
+  labs(title = "Ventes Annuelles du Produit FXD JET 100",
+       x = "Année",
+       y = "Nombre de Ventes") +
+  theme_minimal()
 
 ```
 
 
 
-## type de vente
 
+
+## Total des Ventes par Mois pour la période allant de 2020-01-01 à 2024-12-31
 
 ```{r}
-
+df %>% 
+  group_by(mois) %>% 
+  summarise(sum_mois = sum(nb_de_ventes)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = mois, y = sum_mois)) + 
+  geom_line(group = 1) + 
+  geom_point(size = 3) + 
+  labs(title = "Total des Ventes par Mois pour la période allant de 2020-01-01 à 2024-12-31" ,
+       x = "Mois",
+       y = "Somme des Ventes") +
+  theme_minimal() +
+  scale_x_discrete(labels = month.abb) # Utiliser les abréviations des mois, au lieu des chiffres
 ```
 
 
