@@ -1,0 +1,22 @@
+https://medium.com/@josef.waples/a-case-study-of-regression-modeling-using-mtcars-choosing-predictors-d3300caf7742
+
+https://statorials.org/ensemble-de-donnees-mtcars-r/
+
+https://shiny.posit.co/r/gallery/application-layout/navbar-example/
+
+
+La base de données **`mtcars`** est une célèbre dataset intégrée à R, contenant des informations sur différentes voitures. Voici une traduction des noms de ses variables en français :  
+
+1. **mpg** : Consommation en miles par gallon (miles par gallon).
+2. **cyl** : Nombre de cylindres.
+3. **disp** : Cylindrée (pouces cubes).
+4. **hp** : Puissance (chevaux-vapeur).
+5. **drat** : Ratio du pont arrière (rapports de transmission).
+6. **wt** : Poids de la voiture (en milliers de livres).
+7. **qsec** : Temps pour parcourir 1/4 de mile (en secondes).
+8. **vs** : Type de moteur (0 = en V, 1 = en ligne).
+9. **am** : Type de transmission (0 = automatique, 1 = manuelle).
+10. **gear** : Nombre de vitesses de la boîte de vitesses.
+11. **carb** : Nombre de carburateurs.
+
+N'hésite pas si tu veux des précisions ou une reformulation spécifique !
