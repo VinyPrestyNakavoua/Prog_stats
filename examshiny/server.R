@@ -13,23 +13,26 @@
     
     # Reactive pour filtrer les données selon le type de transmission
     filtered_data <- reactive({
-      mtcars[mtcars$am == as.numeric(input$transmission), ]
+      mtcars[mtcars$hp >= as.numeric(input$hp_min) & mtcars$hp <= as.numeric(input$hp_max), ]
     })
     
-    
+    # ouput pour le hist_mpg
+    output$hist_mpg <- renderPlot({
+      data <- filtered_data()
+      hist(data$mpg, main="Histogramme de MPG", xlab="Miles Per Gallon", col="blue")
+      
+    })
     
     
     # Output pour le graphique
     output$mpg_plot <- renderPlot({
       data <- filtered_data()
-      barplot(
-        data$mpg,
-        names.arg = rownames(data),
-        col = ifelse(input$transmission == 0, "skyblue", "orange"),
-        main = paste("Consommation (mpg) pour les transmissions",
-                     ifelse(input$transmission == 0, "Automatiques", "Manuelles")),
-        ylab = "mpg",
-        xlab = "Voitures"
+      plot(
+        data$hp, data$mpg, 
+        main = "Consommation (mpg) en fonction de la puissance (hp)",
+        xlab = "Puissance (hp)",
+        ylab = "Consommation (mpg)",
+        pch = 19, col = "blue"
       )
     })
   
@@ -39,27 +42,30 @@
       
     # Résumé statistique
     output$summary_output <- renderPrint({
-      summary(mtcars)
+      summary(filtered_data())
     })
     
     
-    # Graphique de régression (mpg en fonction de am)
+    # Graphique de régression (mpg en fonction de hp)
     output$regression_plot <- renderPlot({
-        ggplot(mtcars, aes(x = factor(am), y = mpg, fill = factor(am))) +
-          geom_col() +
-          labs(
-            title = "Consommation moyenne (mpg) par type de transmission",
-            x = "Transmission (0 = Automatique, 1 = Manuelle)",
-            y = "Consommation moyenne (mpg)"
-          ) +
-          theme_minimal()
+      ggplot(filtered_data(), aes(x = hp, y = mpg)) +
+        geom_point(color = "blue") +
+        geom_smooth(method = "lm", color = "red") +
+        labs(
+          title = "Consommation (mpg) en fonction de la puissance (hp)",
+          x = "Puissance (hp)",
+          y = "Consommation (mpg)"
+        ) +
+        theme_minimal()
     })
     
-    # Test d'hypothèse : Comparaison des moyennes de mpg en fonction de am
+    # Test d'hypothèse : Comparaison des moyennes de mpg en fonction de hp
     output$test_output <- renderPrint({
-      test_result <- t.test(mpg ~ am, data = mtcars, alternative=input$alternative)
+      test_result <- cor.test(as.numeric(mtcars$mpg), as.numeric(mtcars$hp), data = mtcars, method = "kendall", alternative=input$alternative)
       test_result
+      
     })
+
     
     # Tableau interactif basé sur les colonnes sélectionnées
     output$data_table <- renderDT({

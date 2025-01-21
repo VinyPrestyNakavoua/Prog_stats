@@ -26,7 +26,7 @@ navbarPage(
   ),   ## on va utiliser un style css pour cette application,le fichier est dans le dossier www
   header = div(
     style = "display: flex; align-items: center; padding: 10px;",
-    h1("Comparaison de la consommation moyenne (mpg) selon le type de transmission : données de mtcars", style = "margin-right: 20px;"),
+    h1("Corrélation entre la consommation de carburant et le nombre de chevaux : données de mtcars", style = "margin-right: 20px;"),
     img(src = "Logo-Normal-SD.png", height = "100px", style = "margin-left: 15px;")
   ),
   # simple ainsi, on fait un navbarpage puis des tabpanel pour les onglets
@@ -35,23 +35,31 @@ navbarPage(
            fluidPage(
              sidebarLayout(
                sidebarPanel(
-                 h4("Choisir le type de transmission :"),
-                 selectInput(
-                   inputId = "transmission", 
-                   label = "Transmission :",
-                   choices = list("Automatique (am = 0)" = 0, 
-                                  "Manuelle (am = 1)" = 1),
-                   selected = 0
+                 h4("Choisir la plage de puissance (hp) :"),
+                 sliderInput(
+                   inputId = "hp_min", 
+                   label = "Puissance minimale (hp):", 
+                   min = min(mtcars$hp), 
+                   max = max(mtcars$hp), 
+                   value = min(mtcars$hp), 
+                   step = 1
+                 ),
+                 sliderInput(
+                   inputId = "hp_max", 
+                   label = "Puissance maximale (hp):", 
+                   min = min(mtcars$hp), 
+                   max = max(mtcars$hp), 
+                   value = max(mtcars$hp), 
+                   step = 1
                  )
                ),
                mainPanel(
-                 
-                 
-                 h3("Graphique : mpg par type de transmission"),
+                 h3("Histogram de mpg"),
+                 plotOutput("hist_mpg"),
+                 h3("Graphique : mpg en fonction de la puissance (hp)"),
                  plotOutput(outputId = "mpg_plot"),
                  h3("Résumé statistique"),
                  verbatimTextOutput("summary_output")
-
                )
              )
            )),
@@ -59,16 +67,12 @@ navbarPage(
   # Onglet Régression
   tabPanel("Régression",
            fluidPage(
-             sidebarLayout(
-               sidebarPanel(
-                 
-               ),
                mainPanel(
                  h3("Graphique de régression"),
                  plotOutput("regression_plot")
                )
              )
-           )),
+           ),
   
   # Onglet Test d'hypothèse
   tabPanel("Test d'hypothèse",
@@ -86,8 +90,12 @@ navbarPage(
                    selected = "two.sided")
                ),
                mainPanel(
+                 h3("Hypothèses du test"),
+                 p("H0 (hypothèse nulle) : Il y  a une corrélation entre la consommation (mpg) et la puissance (hp)."),
+                 p("H1 (hypothèse alternative) : Il n'y a pas de corrélation entre la consommation (mpg) et la puissance (hp)."),
                  h3("Résultats du test d'hypothèse"),
                  verbatimTextOutput("test_output")
+                 
                )
              )
            )),
@@ -98,7 +106,7 @@ navbarPage(
              h3("Jeu de données mtcars"),
              DTOutput("data_table")
            )),
-  tabPanel("About",
+  tabPanel("A propos",
            fluidRow(
              column(6,
                     includeMarkdown("about.md")

@@ -1,19 +1,6 @@
 # Documentation
 
-## Datasets
-
-### 1. Speed and Stopping Distances of Cars
-Ce jeu de données fournit des informations sur la vitesse des voitures et les distances nécessaires pour s'arrêter. Les données ont été collectées dans les années 1920, reflétant les conditions technologiques et routières de cette époque.
-
-- **Colonnes** :
-  1. **Speed** : Vitesse des voitures (en miles par heure, *mph*).
-  2. **Dist** : Distance d'arrêt (en pieds, *ft*).
-
-Ce dataset est souvent utilisé pour illustrer des concepts statistiques comme la corrélation ou les modèles de régression linéaire.
-
----
-
-### 2. Car Information: `mtcars`
+## Car Information: `mtcars`
 Le dataset **mtcars**, intégré dans l'environnement R, propose des informations détaillées sur 32 modèles de voitures, issues des tests routiers publiés dans *Motor Trend* en 1973.
 
 - **Colonnes principales** :
@@ -72,14 +59,14 @@ Les coefficients, l'intercept, et les statistiques (p-valeur, R²) permettent d'
 Les tests d'hypothèses permettent de vérifier des affirmations statistiques sur un jeu de données.
 
 ### Exemple : Test de Student (t-test)
-Le test de Student est utilisé pour comparer les moyennes de deux groupes.
+Le test de correlation de kendall est utilisé pour déterminer s'il y a une corrélation (un lien) entre mpg et hp
 
 - **Hypothèses** :
-  - \( H_0 \) : Les deux moyennes sont égales.
-  - \( H_1 \) : Les deux moyennes sont différentes.
-- **Exemple** : Comparaison de la consommation d'essence (**mpg**) entre les voitures automatiques (**am = 0**) et manuelles (**am = 1**).
-- **Interprétation** :
-  - Une p-valeur inférieure à 0,05 signifie que les différences observées sont significatives au seuil de 5 %.
+  - \( H_0 \) : il y a une corrélation entre la consommation (mpg) et la puissance (hp).
+
+  - \( H_1 \) : il n'y a pas de corrélation entre la consommation (mpg) et la puissance (hp).
+=- **Interprétation** :
+  - Une p-valeur inférieure à 0,05 signifie qu'il n'y a pas de corrélation significative au seuil de 5 %.
 
 ### Autres tests courants
 - **Test du khi-deux** : Pour tester l'indépendance entre deux variables catégoriques.
