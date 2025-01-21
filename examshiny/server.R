@@ -16,6 +16,9 @@
       mtcars[mtcars$am == as.numeric(input$transmission), ]
     })
     
+    
+    
+    
     # Output pour le graphique
     output$mpg_plot <- renderPlot({
       data <- filtered_data()
@@ -36,37 +39,37 @@
       
     # Résumé statistique
     output$summary_output <- renderPrint({
-      isolate(summary(mtcars))
+      summary(mtcars)
     })
     
     
     # Graphique de régression (mpg en fonction de am)
     output$regression_plot <- renderPlot({
-      input$plot_regression  # Actualiser lors du clic sur le bouton
-      isolate({
-        ggplot(mtcars, aes(x = factor(mtcars$am), y = mtcars$mpg)) +
-          geom_point(aes(color = factor(mtcars$am)), size = 3) +
-          geom_smooth(method = "lm", se = FALSE, col = "blue") +
+        ggplot(mtcars, aes(x = factor(am), y = mpg, fill = factor(am))) +
+          geom_col() +
           labs(
-            title = "Régression : mpg en fonction de la transmission",
+            title = "Consommation moyenne (mpg) par type de transmission",
             x = "Transmission (0 = Automatique, 1 = Manuelle)",
-            y = "Consommation (mpg)"
+            y = "Consommation moyenne (mpg)"
           ) +
           theme_minimal()
-      })
     })
     
     # Test d'hypothèse : Comparaison des moyennes de mpg en fonction de am
     output$test_output <- renderPrint({
-      test_result <- t.test(mpg ~ am, data = mtcars)
+      test_result <- t.test(mpg ~ am, data = mtcars, alternative=input$alternative)
       test_result
     })
     
     # Tableau interactif basé sur les colonnes sélectionnées
     output$data_table <- renderDT({
-      datatable(selected_data(), options = list(pageLength = 10))
+      datatable(mtcars, options = list(pageLength = 10))
     })
   }
+  
+
+
+
   
     
   

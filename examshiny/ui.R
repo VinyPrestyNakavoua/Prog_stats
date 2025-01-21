@@ -45,6 +45,8 @@ navbarPage(
                  )
                ),
                mainPanel(
+                 
+                 
                  h3("Graphique : mpg par type de transmission"),
                  plotOutput(outputId = "mpg_plot"),
                  h3("Résumé statistique"),
@@ -59,10 +61,7 @@ navbarPage(
            fluidPage(
              sidebarLayout(
                sidebarPanel(
-                 h4("Paramètres pour la régression"),
-                 selectInput("x_var", "Variable X", choices = names(mtcars), selected = "mpg"),
-                 selectInput("y_var", "Variable Y", choices = names(mtcars), selected = "hp"),
-                 actionButton("plot_regression", "Tracer la régression")
+                 
                ),
                mainPanel(
                  h3("Graphique de régression"),
@@ -76,10 +75,15 @@ navbarPage(
            fluidPage(
              sidebarLayout(
                sidebarPanel(
-                 h4("Paramètres pour le test"),
-                 selectInput("var1", "Variable 1", choices = names(mtcars), selected = "mpg"),
-                 selectInput("var2", "Variable 2", choices = names(mtcars), selected = "hp"),
-                 actionButton("run_test", "Effectuer le test")
+                 h4("Test d'hypothèse"),
+                 selectInput(
+                   inputId = "alternative", 
+                   label = "L'hypothèse alternative",
+                   choices = list("bilatéral (!=)" = "two.sided", 
+                                  "unilatéral à droite >" = "greater", 
+                                  "unilatéral à gauche <" = "less"
+                   ),
+                   selected = "two.sided")
                ),
                mainPanel(
                  h3("Résultats du test d'hypothèse"),
